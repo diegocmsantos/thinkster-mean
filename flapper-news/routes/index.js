@@ -121,7 +121,7 @@ router.post( '/posts/:post/comments/:comment/upvote', function( req, res, next )
 
 } );
 
-router.get( 'posts/:post', function( req, res, next ) {
+router.get( '/posts/:post', function( req, res, next ) {
 
   req.post.populate( 'comments', function( err, post ) {
 
