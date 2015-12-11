@@ -86,6 +86,34 @@ app.factory('posts', [ '$http', function( $http ) {
 
 }]);
 
+app.factory( 'auth', [ '$http', '$window', function( $http, $window ) {
+
+  var auth = {};
+
+  auth.saveToken = function (token){
+    $window.localStorage['flapper-news-token'] = token;
+  };
+
+  auth.getToken = function (){
+    return $window.localStorage['flapper-news-token'];
+  }
+
+  auth.isLoggedIn = function(){
+    var token = auth.getToken();
+
+    if(token){
+      var payload = JSON.parse($window.atob(token.split('.')[1]));
+
+      return payload.exp > Date.now() / 1000;
+    } else {
+      return false;
+    }
+  };
+
+  return auth;
+
+} ] );
+
 app.controller( 'PostsCtrl', [ '$scope', 'posts', 'post', function($scope, posts, post){
 
   $scope.post = post;
